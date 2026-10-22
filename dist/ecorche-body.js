@@ -1,7 +1,29 @@
-import { jsx as o, jsxs as E } from "react/jsx-runtime";
-import { useRef as D, useEffect as G } from "react";
-import * as w from "three";
-const T = [
+import { jsxs as B, jsx as x } from "react/jsx-runtime";
+import { useRef as v, useEffect as I } from "react";
+import * as c from "three";
+import { GLTFLoader as de } from "three/examples/jsm/loaders/GLTFLoader.js";
+const fe = { Quadriceps: [426, 427, 428, 430, 431, 432], "Gluteus Maximus": [406, 410], "Gluteus Medius": [405, 408, 409, 412], Hamstrings: [450, 452, 454, 455, 456, 457], Adductors: [436, 437, 438, 441, 443, 444, 445, 448], "Adductor Magnus": [436, 443], Calves: [472, 473, 475, 476, 478, 479], Gastrocnemius: [472, 473, 475, 476], Soleus: [478, 479], "Tibialis Anterior": [462, 465], "Pectoralis Major": [225, 226, 227, 228, 229, 230], "Upper Chest": [225, 228], "Front Deltoid": [280, 283], "Side Deltoid": [279, 282], "Rear Deltoid": [281, 284], Deltoids: [279, 280, 281, 282, 283, 284], Biceps: [295, 296, 297, 298], Brachialis: [299, 301], Brachioradialis: [337, 342], Triceps: [304, 305, 307, 308], "Forearm Flexors": [313, 315, 319, 320, 321, 322], "Forearm Extensors": [331, 332, 334, 336, 338, 339, 343, 344], "Latissimus Dorsi": [216, 222, 293, 294], Trapezius: [203, 204, 205, 206, 207, 208], "Upper Trapezius": [204, 207], "Middle Trapezius": [203, 205, 206, 208], Infraspinatus: [287, 288, 291, 292], "Erector Spinae": [163, 166, 169, 170], "Rectus Abdominis": [252, 253], Obliques: [256, 257], "Serratus Anterior": [238, 245], "Hip Flexors": [408, 412, 426, 430, 434, 435], Sternocleidomastoid: [86, 87] }, ne = {
+  groups: fe
+}, he = ne.groups, Te = Object.keys(ne.groups), me = {
+  neck: ["Sternocleidomastoid"],
+  traps: ["Trapezius"],
+  shoulders: ["Deltoids"],
+  chest: ["Pectoralis Major"],
+  biceps: ["Biceps"],
+  triceps: ["Triceps"],
+  forearms: ["Forearm Flexors", "Forearm Extensors", "Brachioradialis"],
+  abdominals: ["Rectus Abdominis"],
+  obliques: ["Obliques"],
+  lats: ["Latissimus Dorsi"],
+  "middle back": ["Middle Trapezius", "Infraspinatus"],
+  "lower back": ["Erector Spinae"],
+  glutes: ["Gluteus Maximus"],
+  abductors: ["Gluteus Medius"],
+  adductors: ["Adductors"],
+  quadriceps: ["Quadriceps"],
+  hamstrings: ["Hamstrings"],
+  calves: ["Calves"]
+}, oe = [
   { id: "neck", latin: "STERNOCLEIDOMASTOID", side: "both" },
   { id: "traps", latin: "TRAPEZIUS", side: "both" },
   { id: "shoulders", latin: "DELTOID", side: "both" },
@@ -12,7 +34,7 @@ const T = [
   { id: "abdominals", latin: "RECTUS ABDOMINIS", side: "front" },
   { id: "obliques", latin: "OBLIQUES", side: "front" },
   { id: "lats", latin: "LATISSIMUS DORSI", side: "back" },
-  { id: "middle back", latin: "RHOMBOIDS", side: "back" },
+  { id: "middle back", latin: "RHOMBOIDS / INFRASPINATUS", side: "back" },
   { id: "lower back", latin: "ERECTOR SPINAE", side: "back" },
   { id: "glutes", latin: "GLUTEUS MAXIMUS", side: "back" },
   { id: "abductors", latin: "GLUTEUS MEDIUS", side: "both" },
@@ -20,244 +42,344 @@ const T = [
   { id: "quadriceps", latin: "QUADRICEPS", side: "front" },
   { id: "hamstrings", latin: "HAMSTRINGS", side: "back" },
   { id: "calves", latin: "GASTROCNEMIUS", side: "both" }
-], ee = T.map((t) => t.id);
-function F(t) {
-  return T.find((n) => n.id === t)?.latin || String(t).toUpperCase();
+], Oe = oe.map((e) => e.id), re = "Anatomik kas haritası: Z-Anatomy / BodyParts3D, CC BY-SA 4.0. Gövde: MakeHuman, CC0.";
+function Le(e) {
+  return oe.find((t) => t.id === e)?.latin || String(e).toUpperCase();
 }
-function N(t, n = [], a = []) {
-  return n.includes(t) ? "primary" : a.includes(t) ? "secondary" : "idle";
+function Be(e, t = [], o = []) {
+  return t.includes(e) ? "primary" : o.includes(e) ? "secondary" : "idle";
 }
-function P(t = {}) {
-  const n = t.gender === "female", a = Number(t.weight) || (n ? 62 : 78), m = Number(t.height) || (n ? 165 : 178), e = Number(t.age) || 28, r = a / (m / 100) ** 2, d = U((r - 17) / 14, 0.18, 1), c = U((e - 30) / 85, 0, 0.42);
+function K(e = []) {
+  const t = /* @__PURE__ */ new Set();
+  for (const o of e) {
+    if (!o) continue;
+    const i = me[o] || [o];
+    for (const n of i) {
+      const l = he[n];
+      if (l) for (const s of l) t.add(s);
+    }
+  }
+  return t;
+}
+function pe(e = {}) {
+  const t = e.gender === "female", o = Number(e.weight) || (t ? 62 : 78), i = Number(e.height) || (t ? 165 : 178), n = Number(e.age) || 28, l = o / (i / 100) ** 2, s = ee((l - 17) / 14, 0.18, 1), d = ee((n - 30) / 85, 0, 0.42);
   return {
-    female: n,
-    weight: a,
-    height: m,
-    age: e,
-    bmi: r,
-    bulk: d,
-    definition: Math.max(0.38, 1 - c - Math.max(0, r - 27) * 0.045),
-    shoulder: (n ? 0.9 : 1) * (0.94 + d * 0.14),
-    chest: (n ? 0.92 : 1) * (0.94 + d * 0.16),
-    waist: n ? 0.86 + d * 0.08 : 0.92 + d * 0.12,
-    hip: (n ? 1.12 : 0.98) * (0.96 + d * 0.1),
-    arm: (n ? 0.9 : 1) * (0.9 + d * 0.22),
-    thigh: (n ? 1.05 : 1) * (0.92 + d * 0.18),
-    calf: 0.88 + d * 0.16,
-    neck: (n ? 0.88 : 1) * (0.94 + d * 0.08),
-    tall: m / 178
+    female: t,
+    weight: o,
+    height: i,
+    age: n,
+    bmi: l,
+    bulk: s,
+    definition: Math.max(0.38, 1 - d - Math.max(0, l - 27) * 0.045),
+    shoulder: (t ? 0.9 : 1) * (0.94 + s * 0.14),
+    chest: (t ? 0.92 : 1) * (0.94 + s * 0.16),
+    waist: t ? 0.86 + s * 0.08 : 0.92 + s * 0.12,
+    hip: (t ? 1.12 : 0.98) * (0.96 + s * 0.1),
+    arm: (t ? 0.9 : 1) * (0.9 + s * 0.22),
+    thigh: (t ? 1.05 : 1) * (0.92 + s * 0.18),
+    calf: 0.88 + s * 0.16,
+    neck: (t ? 0.88 : 1) * (0.94 + s * 0.08),
+    tall: i / 178
   };
 }
-function U(t, n, a) {
-  return Math.min(a, Math.max(n, t));
+function ee(e, t, o) {
+  return Math.min(o, Math.max(t, e));
 }
-const $ = {
-  neck: [[50, 17, 3.4, 2.6]],
-  traps: [[50, 21, 10, 2.8]],
-  shoulders: [[37, 23.5, 6.2, 4.6], [63, 23.5, 6.2, 4.6]],
-  chest: [[44, 29, 6.2, 4.4], [56, 29, 6.2, 4.4]],
-  biceps: [[31, 34, 3.4, 6], [69, 34, 3.4, 6]],
-  forearms: [[29, 47, 3, 6.4], [71, 47, 3, 6.4]],
-  abdominals: [[50, 40, 6.6, 9]],
-  obliques: [[43, 40, 2.6, 6.4], [57, 40, 2.6, 6.4]],
-  adductors: [[46, 60, 2.8, 8], [54, 60, 2.8, 8]],
-  quadriceps: [[44.5, 62, 5, 11], [55.5, 62, 5, 11]],
-  abductors: [[40, 54, 3.2, 4.6], [60, 54, 3.2, 4.6]],
-  calves: [[44.5, 85, 4, 9], [55.5, 85, 4, 9]]
-}, H = {
-  neck: [[50, 17, 3.2, 2.4]],
-  traps: [[50, 24, 11, 6]],
-  shoulders: [[37, 23.5, 6.2, 4.6], [63, 23.5, 6.2, 4.6]],
-  triceps: [[31, 34.5, 3.6, 6.6], [69, 34.5, 3.6, 6.6]],
-  forearms: [[29, 48, 2.8, 6.2], [71, 48, 2.8, 6.2]],
-  lats: [[43, 37, 5.5, 9], [57, 37, 5.5, 9]],
-  "middle back": [[50, 33, 6, 7]],
-  "lower back": [[50, 45, 5.5, 6]],
-  glutes: [[45, 55, 5.5, 6], [55, 55, 5.5, 6]],
-  hamstrings: [[44.5, 66, 4.6, 10], [55.5, 66, 4.6, 10]],
-  calves: [[44.5, 86, 4.2, 9], [55.5, 86, 4.2, 9]]
-};
-function q() {
-  return /* @__PURE__ */ E("g", { className: "ecorche-skin", children: [
-    /* @__PURE__ */ o("ellipse", { cx: "50", cy: "10", rx: "6.3", ry: "8" }),
-    /* @__PURE__ */ o("rect", { x: "46.6", y: "15", width: "6.8", height: "5.5", rx: "3" }),
-    /* @__PURE__ */ o("ellipse", { cx: "37", cy: "23", rx: "7", ry: "5.4" }),
-    /* @__PURE__ */ o("ellipse", { cx: "63", cy: "23", rx: "7", ry: "5.4" }),
-    /* @__PURE__ */ o("path", { d: "M41 20 C45 18 55 18 59 20 C62 27 61 36 58 45 C57 50 57 53 56 56 L44 56 C43 53 43 50 42 45 C39 36 38 27 41 20 Z" }),
-    /* @__PURE__ */ o("ellipse", { cx: "50", cy: "54", rx: "11", ry: "8" }),
-    /* @__PURE__ */ o("rect", { x: "30", y: "24", width: "5.6", height: "19", rx: "2.8" }),
-    /* @__PURE__ */ o("rect", { x: "64.4", y: "24", width: "5.6", height: "19", rx: "2.8" }),
-    /* @__PURE__ */ o("rect", { x: "28.8", y: "41", width: "5", height: "17", rx: "2.5" }),
-    /* @__PURE__ */ o("rect", { x: "66.2", y: "41", width: "5", height: "17", rx: "2.5" }),
-    /* @__PURE__ */ o("ellipse", { cx: "31", cy: "60", rx: "3", ry: "4" }),
-    /* @__PURE__ */ o("ellipse", { cx: "69", cy: "60", rx: "3", ry: "4" }),
-    /* @__PURE__ */ o("rect", { x: "41", y: "52", width: "7", height: "27", rx: "3.3" }),
-    /* @__PURE__ */ o("rect", { x: "52", y: "52", width: "7", height: "27", rx: "3.3" }),
-    /* @__PURE__ */ o("ellipse", { cx: "44.5", cy: "77", rx: "4", ry: "3" }),
-    /* @__PURE__ */ o("ellipse", { cx: "55.5", cy: "77", rx: "4", ry: "3" }),
-    /* @__PURE__ */ o("rect", { x: "41.5", y: "76", width: "6", height: "23", rx: "3" }),
-    /* @__PURE__ */ o("rect", { x: "52.5", y: "76", width: "6", height: "23", rx: "3" }),
-    /* @__PURE__ */ o("ellipse", { cx: "44.5", cy: "100", rx: "4.6", ry: "3" }),
-    /* @__PURE__ */ o("ellipse", { cx: "55.5", cy: "100", rx: "4.6", ry: "3" })
-  ] });
+const be = "https://cdn.jsdelivr.net/gh/AygunAlpKagan/ecorche-body@main/models", ge = new c.Color("#e83034"), Se = new c.Color("#ff9230"), G = /* @__PURE__ */ new Map(), Me = new de();
+function te(e) {
+  return e === "female" ? "female_anatomy_mobile.glb" : "male_anatomy_mobile.glb";
 }
-function z({ side: t, primary: n, secondary: a, shape: m, labeled: e }) {
-  const r = t === "back" ? H : $, d = [...n, ...a.filter((i) => !n.includes(i))], c = (m.female ? 0.95 : 1) * (0.95 + m.bulk * 0.12);
-  return /* @__PURE__ */ E("figure", { className: "ecorche-2d-fig", children: [
-    /* @__PURE__ */ E("div", { className: "ecorche-2d-stage", style: { transform: `scale(${c}, ${m.tall})` }, children: [
-      /* @__PURE__ */ E("svg", { viewBox: "0 0 100 110", "aria-hidden": "true", children: [
-        /* @__PURE__ */ o(q, {}),
-        d.map((i) => (r[i] || []).map(([s, l, h, p], f) => /* @__PURE__ */ o(
-          "ellipse",
-          {
-            className: `ecorche-zone ${N(i, n, a)}`,
-            cx: s,
-            cy: l,
-            rx: h,
-            ry: p
-          },
-          `${i}-${f}`
-        )))
-      ] }),
-      e && d.slice(0, 3).map((i) => /* @__PURE__ */ o("span", { className: `ecorche-tag ${N(i, n, a)}`, children: F(i) }, i))
-    ] }),
-    /* @__PURE__ */ o("figcaption", { children: t === "back" ? "Arka" : "Ön" })
-  ] });
+function Ae({ gender: e = "male", modelUrl: t, baseUrl: o } = {}) {
+  return t || (o != null ? `${String(o).replace(/\/$/, "")}/${te(e)}` : `${be}/${te(e)}`);
 }
-function te({
-  gender: t = "male",
-  height: n,
-  weight: a,
-  age: m,
-  primary: e = [],
-  secondary: r = [],
-  view: d = "both",
-  labeled: c = !1,
-  className: i = ""
-}) {
-  const s = P({ gender: t, height: n, weight: a, age: m }), l = d === "front" || d === "back" ? [d] : ["front", "back"];
-  return /* @__PURE__ */ o("div", { className: `ecorche-2d ${l.length > 1 ? "sheet" : ""} ${i}`.trim(), children: l.map((h) => /* @__PURE__ */ o(z, { side: h, primary: e, secondary: r, shape: s, labeled: c }, h)) });
+function we(e) {
+  return G.has(e) || G.set(
+    e,
+    fetch(e).then((t) => {
+      if (!t.ok) throw new Error(`Model yüklenemedi (${t.status}): ${e}`);
+      return t.arrayBuffer();
+    })
+  ), G.get(e);
 }
-const X = 9476518, j = 8357780, J = 3116287, K = 16731533;
-function Q(t) {
-  return t === "primary" ? J : t === "secondary" ? K : t === "muscle" ? j : X;
-}
-function W(t) {
-  const n = Q(t), a = t === "primary" || t === "secondary";
-  return new w.MeshStandardMaterial({
-    color: n,
-    roughness: a ? 0.38 : 0.62,
-    metalness: 0.03,
-    emissive: a ? n : 0,
-    emissiveIntensity: t === "primary" ? 0.42 : t === "secondary" ? 0.26 : 0
+function ke(e) {
+  return new Promise((t, o) => {
+    Me.parse(e.slice(0), "", t, o);
   });
 }
-const u = new w.SphereGeometry(1, 20, 16);
-function k(t, n) {
-  return new w.CapsuleGeometry(t, n, 6, 14);
+function ye(e) {
+  let t = null;
+  return e.traverse((o) => {
+    o.isSkinnedMesh && !t && (t = o);
+  }), t;
 }
-function Y(t, n = [], a = []) {
-  const m = new w.Group(), e = t, r = 0.85 + e.bulk * 0.4, d = (l, h) => h ? n.includes(l) ? "primary" : a.includes(l) ? "secondary" : "muscle" : "skin";
-  function c(l, h, p, { rot: f = [0, 0, 0], scale: S = [1, 1, 1], muscle: y = !1 } = {}) {
-    const x = new w.Mesh(h, W(d(l, y)));
-    return x.name = l, x.position.set(p[0], p[1], p[2]), x.rotation.set(f[0], f[1], f[2]), x.scale.set(S[0], S[1], S[2]), x.castShadow = !0, x.receiveShadow = !0, m.add(x), x;
-  }
-  function i(l, h, p, f = {}) {
-    const [S, y, x] = p, g = f.rot || [0, 0, 0];
-    c(l, h, [S, y, x], { ...f, rot: g }), c(l, h, [-S, y, x], { ...f, rot: [g[0], -g[1], -g[2]] });
-  }
-  const s = (l, h, p) => ({ scale: [l, h, p] });
-  c("head", u, [0, 1.7, 0.01], s(0.095 * e.neck, 0.12, 0.105)), c("jaw", u, [0, 1.63, 0.02], s(0.07, 0.05, 0.08)), c("neck", k(0.045 * e.neck, 0.05), [0, 1.56, -0.01]), c("chestbase", u, [0, 1.37, 0], s(0.19 * e.chest, 0.12, 0.085 * r)), c("ribs", u, [0, 1.24, 0], s(0.155 * e.chest, 0.1, 0.08 * r)), c("waistbase", u, [0, 1.12, 0], s(0.13 * e.waist, 0.1, 0.075 * r)), c("pelvis", u, [0, 0.99, 0], s(0.155 * e.hip, 0.1, 0.085)), i("shoulders", u, [0.188 * e.shoulder, 1.45, 0], { muscle: !0, ...s(0.072 * r, 0.072, 0.072) }), i("upperarm", k(0.042 * e.arm, 0.17), [0.21 * e.shoulder, 1.27, -5e-3], { rot: [0, 0, 0.14] }), i("biceps", u, [0.202 * e.shoulder, 1.29, 0.02], { muscle: !0, ...s(0.04 * r, 0.09, 0.044) }), i("triceps", u, [0.222 * e.shoulder, 1.26, -0.035], { muscle: !0, ...s(0.038 * r, 0.094, 0.042) }), i("elbow", u, [0.232 * e.shoulder, 1.11, 0], s(0.038, 0.038, 0.038)), i("forearms", k(0.034 * e.arm, 0.18), [0.244 * e.shoulder, 0.97, 0.01], { muscle: !0, rot: [0, 0, 0.08] }), i("hand", u, [0.258 * e.shoulder, 0.83, 0.02], s(0.038, 0.066, 0.024)), i("chest", u, [0.072 * e.chest, 1.38, 0.055 * r], { muscle: !0, ...s(0.082 * e.chest, 0.058, 0.06 * r) });
-  for (let l = 0; l < 3; l += 1) {
-    const h = 1.26 - l * 0.055;
-    i("abdominals", u, [0.035, h, 0.07 * r], { muscle: !0, ...s(0.032 * r, 0.026, 0.04 * r) });
-  }
-  return i("obliques", u, [0.1 * e.waist, 1.12, 0.03], { muscle: !0, ...s(0.035, 0.07, 0.05 * r) }), c("traps", u, [0, 1.47, -0.03], { muscle: !0, ...s(0.12 * e.shoulder, 0.07, 0.05) }), i("lats", u, [0.115 * e.chest, 1.22, -0.03], { muscle: !0, ...s(0.06, 0.12, 0.055 * r) }), c("middle back", u, [0, 1.3, -0.06 * r], { muscle: !0, ...s(0.12 * e.chest, 0.08, 0.04) }), c("lower back", u, [0, 1.09, -0.06 * r], { muscle: !0, ...s(0.1 * e.waist, 0.07, 0.04) }), i("glutes", u, [0.07 * e.hip, 0.93, -0.055 * r], { muscle: !0, ...s(0.085 * e.hip, 0.08, 0.075) }), i("abductors", u, [0.135 * e.hip, 0.86, 0.01], { muscle: !0, ...s(0.045, 0.09, 0.06) }), i("upperleg", k(0.066 * e.thigh, 0.18), [0.082, 0.7, 0], { rot: [0, 0, 0.03] }), i("quadriceps", u, [0.082, 0.72, 0.05 * r], { muscle: !0, ...s(0.058 * e.thigh, 0.12, 0.055) }), i("adductors", k(0.032 * e.thigh, 0.12), [0.04, 0.72, 0.02], { muscle: !0 }), i("hamstrings", u, [0.085, 0.7, -0.05 * r], { muscle: !0, ...s(0.05, 0.12, 0.05) }), i("knee", u, [0.085, 0.5, 0.01], s(0.05, 0.05, 0.05)), i("lowerleg", k(0.05 * e.calf, 0.17), [0.085, 0.32, 5e-3]), i("calves", u, [0.085, 0.36, -0.04 * r], { muscle: !0, ...s(0.05 * e.calf, 0.085, 0.05) }), i("foot", u, [0.09, 0.05, 0.05], s(0.045, 0.035, 0.1)), m;
+function Re(e) {
+  const t = e.geometry.getAttribute("color");
+  if (!t) return null;
+  const o = t.count, i = new Float32Array(o * 3);
+  for (let n = 0; n < o; n += 1)
+    i[n * 3] = t.getX(n), i[n * 3 + 1] = t.getY(n), i[n * 3 + 2] = t.getZ(n);
+  return e.geometry.setAttribute("color", new c.BufferAttribute(i.slice(), 3)), i;
 }
-function Z(t, { autoRotate: n = !0 } = {}) {
-  const a = new w.WebGLRenderer({ canvas: t, antialias: !0, alpha: !0 });
-  a.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)), a.shadowMap.enabled = !0, a.shadowMap.type = w.PCFSoftShadowMap;
-  const m = new w.Scene(), e = 1.05, r = new w.OrthographicCamera(-e, e, e, -e, 0.1, 40);
-  r.position.set(0, 0.9, 6), r.lookAt(0, 0.9, 0);
-  const d = new w.HemisphereLight(14674175, 1446688, 0.95), c = new w.DirectionalLight(16777215, 1.45);
-  c.position.set(2.4, 3.6, 3.2), c.castShadow = !0, c.shadow.mapSize.set(1024, 1024), c.shadow.camera.near = 0.5, c.shadow.camera.far = 12, c.shadow.bias = -8e-4;
-  const i = new w.DirectionalLight(9024767, 0.6);
-  i.position.set(-3, 2, -2.4), m.add(d, c, i);
-  const s = new w.Mesh(
-    new w.CircleGeometry(1.7, 48),
-    new w.ShadowMaterial({ opacity: 0.35 })
-  );
-  s.rotation.x = -Math.PI / 2, s.position.y = 0, s.receiveShadow = !0, m.add(s);
-  const l = new w.Group();
-  m.add(l);
-  let h = null, p = 0, f = !1, S = 0, y = 0, x = n;
-  function g() {
-    const b = Math.max(1, t.clientWidth || 320), M = Math.max(1, t.clientHeight || 420);
-    a.setSize(b, M, !1);
-    const O = b / M;
-    r.left = -e * O, r.right = e * O, r.top = e, r.bottom = -e, r.updateProjectionMatrix();
+function xe(e, t, o, i, n, l) {
+  if (!e || !t) return;
+  const s = e.geometry.getAttribute("_muscle"), d = e.geometry.getAttribute("color");
+  if (!s || !d) return;
+  const u = K(o), f = K(i);
+  for (let a = 0; a < s.count; a += 1) {
+    const b = Math.round(s.getX(a));
+    u.has(b) ? d.setXYZ(a, n.r, n.g, n.b) : f.has(b) ? d.setXYZ(a, l.r, l.g, l.b) : d.setXYZ(a, t[a * 3], t[a * 3 + 1], t[a * 3 + 2]);
   }
-  function B(b) {
-    h && (l.remove(h), h.traverse((M) => {
-      M.isMesh && M.material.dispose();
-    })), h = b, l.add(h);
+  d.needsUpdate = !0;
+}
+function H(e, t) {
+  if (!e?.skeleton) return;
+  const o = Object.fromEntries(e.skeleton.bones.map((n) => [n.name, n]));
+  e.skeleton.pose();
+  const i = (n, l) => {
+    o[n] && o[n].rotateZ(c.MathUtils.degToRad(l));
+  };
+  t === "curl" && ["R", "L"].forEach((n) => i(`ForeArm_${n}`, -110)), t === "squat" && ["R", "L"].forEach((n) => {
+    i(`Thigh_${n}`, -95), i(`Shin_${n}`, 115);
+  });
+}
+function ie(e, t, o) {
+  e.scale.set(1, 1, 1), e.position.set(0, 0, 0), e.updateMatrixWorld(!0);
+  const i = new c.Box3().setFromObject(e), l = i.getSize(new c.Vector3()).y || 1.7, d = (o.height || 175) / 100 / l, u = d * (0.86 + o.bulk * 0.28);
+  e.scale.set(u, d, u), e.updateMatrixWorld(!0), i.setFromObject(e);
+  const f = i.getCenter(new c.Vector3());
+  e.position.x -= f.x, e.position.z -= f.z, e.position.y -= i.min.y, t?.material && (t.material.roughness = 0.38 + (1 - (o.definition || 0.7)) * 0.32);
+}
+function Ce(e, { view: t = "orbit", autoRotate: o = !1 } = {}) {
+  const i = new c.WebGLRenderer({ canvas: e, antialias: !0, alpha: !0 });
+  i.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)), i.outputColorSpace = c.SRGBColorSpace;
+  const n = new c.Scene();
+  n.add(new c.HemisphereLight(16777215, 7172992, 1.55));
+  const l = new c.DirectionalLight(16777215, 2.05);
+  l.position.set(2.1, 4.2, 3.1);
+  const s = new c.DirectionalLight(14542847, 0.55);
+  s.position.set(-2.4, 1.6, 2.2);
+  const d = new c.DirectionalLight(16777215, 0.85);
+  d.position.set(-3.1, 2.2, -2.4), n.add(l, s, d);
+  const u = new c.PerspectiveCamera(28, 1, 0.05, 40), f = new c.OrthographicCamera(-1, 1, 1, -1, 0.05, 40), a = f.clone(), b = new c.Group();
+  n.add(b);
+  let m = null, h = null, S = null, M = t === "orbit" ? 0.42 : 0, k = 0, R = !1, P = 0, U = 0, Y = 0, F = o && t === "orbit", $ = t === "orbit" ? 150 : 0, p = new c.Vector3(0, 0.92, 0), C = 3.4, z = 0, E = { primary: [], secondary: [], primaryColor: ge.clone(), secondaryColor: Se.clone() }, D = "rest", T = "Yükleniyor…", j = "";
+  function N() {
+    if (!m) return;
+    const r = new c.Box3().setFromObject(b), g = r.getSize(new c.Vector3());
+    p = r.getCenter(new c.Vector3()), C = Math.max(g.y * 2.7, 3.2), u.position.set(p.x, p.y + g.y * 0.02, p.z + C), u.lookAt(p);
+    const w = g.y * 0.62;
+    for (const A of [f, a])
+      A.top = w, A.bottom = -w, A.near = 0.05, A.far = 40;
+    f.position.set(p.x, p.y, p.z + C), a.position.set(p.x, p.y, p.z - C), f.lookAt(p), a.lookAt(p), a.up.set(0, 1, 0), O();
   }
-  function I(b) {
-    f = !0, x = !1, S = b.clientX, t.setPointerCapture?.(b.pointerId);
+  function O() {
+    const r = Math.max(1, e.clientWidth || 320), g = Math.max(1, e.clientHeight || 420);
+    i.setSize(r, g, !1);
+    const w = r / g;
+    u.aspect = w, u.updateProjectionMatrix();
+    const A = t === "both" ? 2 : 1;
+    for (const y of [f, a]) {
+      const L = y.top * (w / A);
+      y.left = -L, y.right = L, y.updateProjectionMatrix();
+    }
   }
-  function R(b) {
-    f && (p += (b.clientX - S) * 0.01, S = b.clientX);
+  function X() {
+    xe(h, S, E.primary, E.secondary, E.primaryColor, E.secondaryColor);
   }
-  function C() {
-    f = !1;
+  async function ae({ gender: r, shape: g, modelUrl: w, baseUrl: A }) {
+    const y = Ae({ gender: r, modelUrl: w, baseUrl: A });
+    if (m && h && y === j) {
+      ie(m, h, g), H(h, D), N();
+      return;
+    }
+    const Q = z += 1;
+    T = "Yükleniyor…", j = y;
+    const L = await we(y), ue = await ke(L);
+    if (Q === z) {
+      if (m && (b.remove(m), m.traverse((J) => {
+        J.isMesh && J.material?.dispose?.();
+      })), m = ue.scene, h = ye(m), !h) {
+        T = "İskeletli mesh yok";
+        return;
+      }
+      S = Re(h), h.material = new c.MeshStandardMaterial({
+        vertexColors: !0,
+        roughness: 0.52,
+        metalness: 0.02
+      }), h.frustumCulled = !1, ie(m, h, g), b.add(m), H(h, D), X(), M = t === "orbit" ? 0.42 : 0, k = 0, b.rotation.set(0, 0, 0), N(), T = "";
+    }
   }
-  t.addEventListener("pointerdown", I), t.addEventListener("pointermove", R), window.addEventListener("pointerup", C);
-  const v = new ResizeObserver(g);
-  v.observe(t), g();
-  let A = 150;
-  function L() {
-    A > 0 ? A -= 1 : x && !f && (p += 6e-3), l.rotation.y = p, a.render(m, r), y = requestAnimationFrame(L);
+  function ce(r = [], g = [], w, A) {
+    E = {
+      primary: r,
+      secondary: g,
+      primaryColor: new c.Color(w || "#e83034"),
+      secondaryColor: new c.Color(A || "#ff9230")
+    }, X();
   }
-  return L(), {
-    setFigure: B,
-    resize: g,
-    setAutoRotate(b) {
-      x = b;
+  function le(r = "rest") {
+    D = r, H(h, D), N();
+  }
+  function _(r) {
+    t === "orbit" && (R = !0, F = !1, P = r.clientX, U = r.clientY, e.setPointerCapture?.(r.pointerId));
+  }
+  function V(r) {
+    R && (M += (r.clientX - P) * 8e-3, k = Math.min(0.45, Math.max(-0.18, k + (r.clientY - U) * 4e-3)), P = r.clientX, U = r.clientY);
+  }
+  function q() {
+    R = !1;
+  }
+  e.addEventListener("pointerdown", _), e.addEventListener("pointermove", V), window.addEventListener("pointerup", q);
+  const Z = new ResizeObserver(O);
+  Z.observe(e), O();
+  function W() {
+    $ > 0 ? $ -= 1 : F && !R && t === "orbit" && (M += 6e-3), b.rotation.set(k, M, 0);
+    const r = e.clientWidth || 1, g = e.clientHeight || 1;
+    t === "both" ? (i.setScissorTest(!0), i.setViewport(0, 0, r / 2, g), i.setScissor(0, 0, r / 2, g), i.render(n, f), i.setViewport(r / 2, 0, r / 2, g), i.setScissor(r / 2, 0, r / 2, g), i.render(n, a), i.setScissorTest(!1)) : t === "back" ? i.render(n, a) : t === "front" ? i.render(n, f) : (u.position.set(
+      p.x + Math.sin(0) * 0,
+      p.y + C * Math.sin(k) * 0.15,
+      p.z + C
+    ), u.lookAt(p), i.render(n, u)), Y = requestAnimationFrame(W);
+  }
+  return W(), {
+    setFigure: ae,
+    setHighlight: ce,
+    setPose: le,
+    setAutoRotate(r) {
+      F = !!r && t === "orbit";
     },
+    getStatus: () => T,
+    resize: O,
     dispose() {
-      cancelAnimationFrame(y), t.removeEventListener("pointerdown", I), t.removeEventListener("pointermove", R), window.removeEventListener("pointerup", C), v.disconnect(), a.dispose();
+      z += 1, cancelAnimationFrame(Y), e.removeEventListener("pointerdown", _), e.removeEventListener("pointermove", V), window.removeEventListener("pointerup", q), Z.disconnect(), i.dispose();
     }
   };
 }
-function re({
-  gender: t = "male",
-  height: n,
-  weight: a,
-  age: m,
-  primary: e = [],
-  secondary: r = [],
-  autoRotate: d = !0,
-  className: c = ""
+function se(e, {
+  view: t = "orbit",
+  gender: o = "male",
+  height: i,
+  weight: n,
+  age: l,
+  primary: s = [],
+  secondary: d = [],
+  primaryColor: u,
+  secondaryColor: f,
+  autoRotate: a = !1,
+  pose: b = "rest",
+  modelUrl: m,
+  baseUrl: h
 }) {
-  const i = D(null), s = D(null), l = P({ gender: t, height: n, weight: a, age: m }), h = JSON.stringify({ gender: t, height: n, weight: a, age: m, primary: e, secondary: r, autoRotate: d });
-  return G(() => {
-    const p = i.current;
-    if (!p) return;
-    const f = Z(p, { autoRotate: d });
-    return f.setFigure(Y(l, e, r)), s.current = f, () => {
-      f.dispose(), s.current = null;
+  const S = v(null), M = pe({ gender: o, height: i, weight: n, age: l });
+  I(() => {
+    const k = e.current;
+    if (!k) return;
+    const R = Ce(k, { view: t, autoRotate: a });
+    return S.current = R, () => {
+      R.dispose(), S.current = null;
     };
-  }, [h]), /* @__PURE__ */ E("div", { className: `ecorche-3d ${c}`.trim(), children: [
-    /* @__PURE__ */ o("canvas", { ref: i, "aria-label": "3D anatomy figure" }),
-    /* @__PURE__ */ o("p", { className: "ecorche-hint", children: "Sürükle, dön." })
+  }, [t]), I(() => {
+    S.current?.setAutoRotate(a);
+  }, [a]), I(() => {
+    S.current?.setFigure({ gender: o, shape: M, modelUrl: m, baseUrl: h });
+  }, [o, M.height, M.weight, M.bulk, m, h]), I(() => {
+    S.current?.setHighlight(s, d, u, f);
+  }, [s, d, u, f]), I(() => {
+    S.current?.setPose(b);
+  }, [b]);
+}
+function Pe({
+  gender: e = "male",
+  height: t,
+  weight: o,
+  age: i,
+  primary: n = [],
+  secondary: l = [],
+  primaryColor: s,
+  secondaryColor: d,
+  view: u = "both",
+  pose: f = "rest",
+  modelUrl: a,
+  baseUrl: b,
+  credit: m = !0,
+  className: h = ""
+}) {
+  const S = v(null), M = u === "back" || u === "front" ? u : "both";
+  return se(S, {
+    view: M,
+    gender: e,
+    height: t,
+    weight: o,
+    age: i,
+    primary: n,
+    secondary: l,
+    primaryColor: s,
+    secondaryColor: d,
+    autoRotate: !1,
+    pose: f,
+    modelUrl: a,
+    baseUrl: b
+  }), /* @__PURE__ */ B("div", { className: `ecorche-2d ${M === "both" ? "sheet" : ""} ${h}`.trim(), children: [
+    /* @__PURE__ */ B("div", { className: "ecorche-2d-stage", children: [
+      /* @__PURE__ */ x("canvas", { ref: S, "aria-label": "2D anatomy figure" }),
+      M === "both" && /* @__PURE__ */ B("div", { className: "ecorche-captions", children: [
+        /* @__PURE__ */ x("span", { children: "Ön" }),
+        /* @__PURE__ */ x("span", { children: "Arka" })
+      ] })
+    ] }),
+    m && /* @__PURE__ */ x("p", { className: "ecorche-credit", children: re })
+  ] });
+}
+function Ue({
+  gender: e = "male",
+  height: t,
+  weight: o,
+  age: i,
+  primary: n = [],
+  secondary: l = [],
+  primaryColor: s,
+  secondaryColor: d,
+  autoRotate: u = !0,
+  pose: f = "rest",
+  modelUrl: a,
+  baseUrl: b,
+  credit: m = !0,
+  className: h = ""
+}) {
+  const S = v(null);
+  return se(S, {
+    view: "orbit",
+    gender: e,
+    height: t,
+    weight: o,
+    age: i,
+    primary: n,
+    secondary: l,
+    primaryColor: s,
+    secondaryColor: d,
+    autoRotate: u,
+    pose: f,
+    modelUrl: a,
+    baseUrl: b
+  }), /* @__PURE__ */ B("div", { className: `ecorche-3d ${h}`.trim(), children: [
+    /* @__PURE__ */ x("canvas", { ref: S, "aria-label": "3D anatomy figure" }),
+    /* @__PURE__ */ x("p", { className: "ecorche-hint", children: "Sürükle, dön." }),
+    m && /* @__PURE__ */ x("p", { className: "ecorche-credit", children: re })
   ] });
 }
 export {
-  te as Body2D,
-  re as Body3D,
-  T as MUSCLES,
-  ee as MUSCLE_IDS,
-  P as bodyShape,
-  F as latin,
-  N as roleOf
+  me as ALIASES,
+  Pe as Body2D,
+  Ue as Body3D,
+  re as CREDITS,
+  he as GROUPS,
+  Te as GROUP_NAMES,
+  oe as MUSCLES,
+  Oe as MUSCLE_IDS,
+  pe as bodyShape,
+  Le as latin,
+  te as modelFile,
+  Ae as resolveModelUrl,
+  Be as roleOf,
+  K as vertexIds
 };

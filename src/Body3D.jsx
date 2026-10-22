@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { bodyShape } from "./shape.js";
-import { buildFigure, createScene } from "./figure3d.js";
+import { useRef } from "react";
+import { CREDITS } from "./muscles.js";
+import { useViewer } from "./useViewer.js";
 
 export function Body3D({
   gender = "male",
@@ -9,30 +9,37 @@ export function Body3D({
   age,
   primary = [],
   secondary = [],
+  primaryColor,
+  secondaryColor,
   autoRotate = true,
+  pose = "rest",
+  modelUrl,
+  baseUrl,
+  credit = true,
   className = "",
 }) {
   const canvasRef = useRef(null);
-  const engineRef = useRef(null);
-  const shape = bodyShape({ gender, height, weight, age });
-  const key = JSON.stringify({ gender, height, weight, age, primary, secondary, autoRotate });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return undefined;
-    const engine = createScene(canvas, { autoRotate });
-    engine.setFigure(buildFigure(shape, primary, secondary));
-    engineRef.current = engine;
-    return () => {
-      engine.dispose();
-      engineRef.current = null;
-    };
-  }, [key]);
+  useViewer(canvasRef, {
+    view: "orbit",
+    gender,
+    height,
+    weight,
+    age,
+    primary,
+    secondary,
+    primaryColor,
+    secondaryColor,
+    autoRotate,
+    pose,
+    modelUrl,
+    baseUrl,
+  });
 
   return (
     <div className={`ecorche-3d ${className}`.trim()}>
       <canvas ref={canvasRef} aria-label="3D anatomy figure" />
       <p className="ecorche-hint">Sürükle, dön.</p>
+      {credit && <p className="ecorche-credit">{CREDITS}</p>}
     </div>
   );
 }

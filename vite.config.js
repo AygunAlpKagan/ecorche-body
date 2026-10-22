@@ -5,9 +5,11 @@ import { fileURLToPath } from "node:url";
 
 const root = dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
+  publicDir: command === "serve" ? resolve(root, "models") : false,
   build: {
+    assetsInlineLimit: 0,
     lib: {
       entry: resolve(root, "src/index.js"),
       name: "EcorcheBody",
@@ -15,7 +17,13 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime", "three"],
+      external: [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "three",
+        /^three\//,
+      ],
     },
   },
-});
+}));

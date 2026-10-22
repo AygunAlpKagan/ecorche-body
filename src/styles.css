@@ -1,79 +1,65 @@
-.ecorche-3d {
+.ecorche-3d,
+.ecorche-2d-stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  background: #101014;
+  background: radial-gradient(ellipse at 50% 18%, #2a3140 0%, #10141c 68%);
   border-radius: 1rem;
   overflow: hidden;
 }
-.ecorche-3d canvas {
+.ecorche-3d {
+  aspect-ratio: 3 / 4;
+  max-height: min(72vh, 620px);
+  margin-inline: auto;
+}
+.ecorche-2d-stage {
+  aspect-ratio: 4 / 5;
+}
+.ecorche-2d.sheet .ecorche-2d-stage {
+  aspect-ratio: 8 / 5;
+}
+.ecorche-3d canvas,
+.ecorche-2d-stage canvas {
   width: 100%;
   height: 100%;
   display: block;
   touch-action: none;
-  cursor: grab;
 }
-.ecorche-hint {
+.ecorche-3d canvas { cursor: grab; }
+.ecorche-3d canvas:active { cursor: grabbing; }
+.ecorche-hint,
+.ecorche-credit,
+.ecorche-captions {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0.6rem;
   margin: 0;
   text-align: center;
-  color: #8b93a7;
-  font-size: 0.72rem;
   pointer-events: none;
+}
+.ecorche-hint {
+  bottom: 1.55rem;
+  color: #9aa3ae;
+  font-size: 0.72rem;
+}
+.ecorche-credit {
+  bottom: 0.45rem;
+  color: #6b7380;
+  font-size: 0.58rem;
+  padding: 0 0.6rem;
+  line-height: 1.35;
 }
 .ecorche-2d {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
-.ecorche-2d.sheet {
+.ecorche-2d .ecorche-credit {
+  position: static;
+}
+.ecorche-captions {
+  bottom: 0.45rem;
+  display: grid;
   grid-template-columns: 1fr 1fr;
-}
-.ecorche-2d-fig {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-.ecorche-2d-stage {
-  position: relative;
-  width: 100%;
-  background: radial-gradient(ellipse at 50% 24%, #262033 0%, #121019 72%);
-  border: 1px solid #2a2038;
-  border-radius: 1rem;
-  overflow: hidden;
-  transform-origin: center top;
-}
-.ecorche-2d-stage svg {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-.ecorche-2d-fig figcaption {
-  color: #9b90b8;
+  color: #9aa3ae;
   font-size: 0.72rem;
   font-weight: 700;
 }
-.ecorche-skin {
-  fill: #9099a6;
-}
-.ecorche-zone {
-  mix-blend-mode: overlay;
-  filter: blur(0.6px);
-}
-.ecorche-zone.primary { fill: #2f8cff; opacity: 0.78; }
-.ecorche-zone.secondary { fill: #ff4d8d; opacity: 0.55; }
-.ecorche-tag {
-  position: absolute;
-  right: 8%;
-  top: 28%;
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-shadow: 0 1px 4px #000;
-}
-.ecorche-tag.primary { color: #7ec4ff; }
-.ecorche-tag.secondary { color: #ff9ac8; }

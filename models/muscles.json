@@ -1,0 +1,766 @@
+{
+  "muscles": [
+    {
+      "id": 86,
+      "name": "Sternocleidomastoid muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 87,
+      "name": "Sternocleidomastoid muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 163,
+      "name": "Iliocostalis lumborum muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 166,
+      "name": "Iliocostalis lumborum muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 169,
+      "name": "Longissimus thoracis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 170,
+      "name": "Longissimus thoracis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 203,
+      "name": "Ascending part of trapezius muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 204,
+      "name": "Descending part of trapezius muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 205,
+      "name": "Transverse part of trapezius muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 206,
+      "name": "Ascending part of trapezius muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 207,
+      "name": "Descending part of trapezius muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 208,
+      "name": "Transverse part of trapezius muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 216,
+      "name": "Latissimus dorsi muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 222,
+      "name": "Latissimus dorsi muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 225,
+      "name": "Clavicular head of pectoralis major muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 226,
+      "name": "Sternocostal head of pectoralis major muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 227,
+      "name": "(Abdominal part of pectoralis major muscle).r",
+      "side": "R"
+    },
+    {
+      "id": 228,
+      "name": "Clavicular head of pectoralis major muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 229,
+      "name": "Sternocostal head of pectoralis major muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 230,
+      "name": "(Abdominal part of pectoralis major muscle).l",
+      "side": "L"
+    },
+    {
+      "id": 238,
+      "name": "Serratus anterior muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 245,
+      "name": "Serratus anterior muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 252,
+      "name": "Rectus abdominis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 256,
+      "name": "External abdominal oblique muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 257,
+      "name": "External abdominal oblique muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 279,
+      "name": "Acromial part of deltoid muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 280,
+      "name": "Clavicular part of deltoid muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 281,
+      "name": "Scapular spinal part of deltoid muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 282,
+      "name": "Acromial part of deltoid muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 283,
+      "name": "Clavicular part of deltoid muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 284,
+      "name": "Scapular spinal part of deltoid muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 287,
+      "name": "Teres minor muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 288,
+      "name": "Infraspinatus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 291,
+      "name": "Teres minor muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 292,
+      "name": "Infraspinatus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 293,
+      "name": "Teres major muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 294,
+      "name": "Teres major muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 295,
+      "name": "Long head of biceps brachii.r",
+      "side": "R"
+    },
+    {
+      "id": 296,
+      "name": "Short head of biceps brachii.r",
+      "side": "R"
+    },
+    {
+      "id": 297,
+      "name": "Long head of biceps brachii.l",
+      "side": "L"
+    },
+    {
+      "id": 298,
+      "name": "Short head of biceps brachii.l",
+      "side": "L"
+    },
+    {
+      "id": 299,
+      "name": "Brachialis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 301,
+      "name": "Brachialis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 304,
+      "name": "Lateral head of triceps brachii.r",
+      "side": "R"
+    },
+    {
+      "id": 305,
+      "name": "Long head of triceps brachii.r",
+      "side": "R"
+    },
+    {
+      "id": 307,
+      "name": "Lateral head of triceps brachii.l",
+      "side": "L"
+    },
+    {
+      "id": 308,
+      "name": "Long head of triceps brachii.l",
+      "side": "L"
+    },
+    {
+      "id": 313,
+      "name": "Humeral head of flexor carpi ulnaris.r",
+      "side": "R"
+    },
+    {
+      "id": 315,
+      "name": "Humeral head of flexor carpi ulnaris.l",
+      "side": "L"
+    },
+    {
+      "id": 319,
+      "name": "Flexor carpi radialis.r",
+      "side": "R"
+    },
+    {
+      "id": 320,
+      "name": "Palmaris longus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 321,
+      "name": "Flexor carpi radialis.l",
+      "side": "L"
+    },
+    {
+      "id": 322,
+      "name": "Palmaris longus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 331,
+      "name": "Extensor digitorum.r",
+      "side": "R"
+    },
+    {
+      "id": 332,
+      "name": "Extensor digitorum.l",
+      "side": "L"
+    },
+    {
+      "id": 334,
+      "name": "Humeral head of extensor carpi ulnaris.r",
+      "side": "R"
+    },
+    {
+      "id": 336,
+      "name": "Humeral head of extensor carpi ulnaris.l",
+      "side": "L"
+    },
+    {
+      "id": 337,
+      "name": "Brachioradialis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 338,
+      "name": "Extensor carpi radialis longus.r",
+      "side": "R"
+    },
+    {
+      "id": 339,
+      "name": "Extensor carpi radialis brevis.r",
+      "side": "R"
+    },
+    {
+      "id": 342,
+      "name": "Brachioradialis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 343,
+      "name": "Extensor carpi radialis longus.l",
+      "side": "L"
+    },
+    {
+      "id": 344,
+      "name": "Extensor carpi radialis brevis.l",
+      "side": "L"
+    },
+    {
+      "id": 405,
+      "name": "Gluteus medius muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 406,
+      "name": "Gluteus maximus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 408,
+      "name": "Tensor fasciae latae.r",
+      "side": "R"
+    },
+    {
+      "id": 409,
+      "name": "Gluteus medius muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 410,
+      "name": "Gluteus maximus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 412,
+      "name": "Tensor fasciae latae.l",
+      "side": "L"
+    },
+    {
+      "id": 426,
+      "name": "Rectus femoris muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 427,
+      "name": "Vastus lateralis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 428,
+      "name": "Vastus medialis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 430,
+      "name": "Rectus femoris muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 431,
+      "name": "Vastus lateralis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 432,
+      "name": "Vastus medialis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 434,
+      "name": "Sartorius muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 435,
+      "name": "Sartorius muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 436,
+      "name": "Adductor magnus.r",
+      "side": "R"
+    },
+    {
+      "id": 437,
+      "name": "Adductor longus.r",
+      "side": "R"
+    },
+    {
+      "id": 438,
+      "name": "Pectineus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 441,
+      "name": "Gracilis muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 443,
+      "name": "Adductor magnus.l",
+      "side": "L"
+    },
+    {
+      "id": 444,
+      "name": "Adductor longus.l",
+      "side": "L"
+    },
+    {
+      "id": 445,
+      "name": "Pectineus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 448,
+      "name": "Gracilis muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 450,
+      "name": "Long head of biceps femoris.r",
+      "side": "R"
+    },
+    {
+      "id": 452,
+      "name": "Long head of biceps femoris.l",
+      "side": "L"
+    },
+    {
+      "id": 454,
+      "name": "Semimembranosus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 455,
+      "name": "Semitendinosus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 456,
+      "name": "Semimembranosus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 457,
+      "name": "Semitendinosus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 458,
+      "name": "Extensor digitorum longus.r",
+      "side": "R"
+    },
+    {
+      "id": 460,
+      "name": "Extensor digitorum longus.l",
+      "side": "L"
+    },
+    {
+      "id": 462,
+      "name": "Tibialis anterior muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 465,
+      "name": "Tibialis anterior muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 468,
+      "name": "Fibularis longus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 470,
+      "name": "Fibularis longus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 472,
+      "name": "Lateral head of gastrocnemius.r",
+      "side": "R"
+    },
+    {
+      "id": 473,
+      "name": "Medial head of gastrocnemius.r",
+      "side": "R"
+    },
+    {
+      "id": 474,
+      "name": "Calcaneal tendon.r",
+      "side": "R"
+    },
+    {
+      "id": 475,
+      "name": "Lateral head of gastrocnemius.l",
+      "side": "L"
+    },
+    {
+      "id": 476,
+      "name": "Medial head of gastrocnemius.l",
+      "side": "L"
+    },
+    {
+      "id": 477,
+      "name": "Calcaneal tendon.l",
+      "side": "L"
+    },
+    {
+      "id": 478,
+      "name": "Soleus muscle.r",
+      "side": "R"
+    },
+    {
+      "id": 479,
+      "name": "Soleus muscle.l",
+      "side": "L"
+    },
+    {
+      "id": 724,
+      "name": "Patella.r",
+      "side": "R"
+    },
+    {
+      "id": 808,
+      "name": "Patella.l",
+      "side": "L"
+    },
+    {
+      "id": 881,
+      "name": "Skin",
+      "side": ""
+    }
+  ],
+  "groups": {
+    "Quadriceps": [
+      426,
+      427,
+      428,
+      430,
+      431,
+      432
+    ],
+    "Gluteus Maximus": [
+      406,
+      410
+    ],
+    "Gluteus Medius": [
+      405,
+      408,
+      409,
+      412
+    ],
+    "Hamstrings": [
+      450,
+      452,
+      454,
+      455,
+      456,
+      457
+    ],
+    "Adductors": [
+      436,
+      437,
+      438,
+      441,
+      443,
+      444,
+      445,
+      448
+    ],
+    "Adductor Magnus": [
+      436,
+      443
+    ],
+    "Calves": [
+      472,
+      473,
+      475,
+      476,
+      478,
+      479
+    ],
+    "Gastrocnemius": [
+      472,
+      473,
+      475,
+      476
+    ],
+    "Soleus": [
+      478,
+      479
+    ],
+    "Tibialis Anterior": [
+      462,
+      465
+    ],
+    "Pectoralis Major": [
+      225,
+      226,
+      227,
+      228,
+      229,
+      230
+    ],
+    "Upper Chest": [
+      225,
+      228
+    ],
+    "Front Deltoid": [
+      280,
+      283
+    ],
+    "Side Deltoid": [
+      279,
+      282
+    ],
+    "Rear Deltoid": [
+      281,
+      284
+    ],
+    "Deltoids": [
+      279,
+      280,
+      281,
+      282,
+      283,
+      284
+    ],
+    "Biceps": [
+      295,
+      296,
+      297,
+      298
+    ],
+    "Brachialis": [
+      299,
+      301
+    ],
+    "Brachioradialis": [
+      337,
+      342
+    ],
+    "Triceps": [
+      304,
+      305,
+      307,
+      308
+    ],
+    "Forearm Flexors": [
+      313,
+      315,
+      319,
+      320,
+      321,
+      322
+    ],
+    "Forearm Extensors": [
+      331,
+      332,
+      334,
+      336,
+      338,
+      339,
+      343,
+      344
+    ],
+    "Latissimus Dorsi": [
+      216,
+      222,
+      293,
+      294
+    ],
+    "Trapezius": [
+      203,
+      204,
+      205,
+      206,
+      207,
+      208
+    ],
+    "Upper Trapezius": [
+      204,
+      207
+    ],
+    "Middle Trapezius": [
+      203,
+      205,
+      206,
+      208
+    ],
+    "Infraspinatus": [
+      287,
+      288,
+      291,
+      292
+    ],
+    "Erector Spinae": [
+      163,
+      166,
+      169,
+      170
+    ],
+    "Rectus Abdominis": [
+      252,
+      253
+    ],
+    "Obliques": [
+      256,
+      257
+    ],
+    "Serratus Anterior": [
+      238,
+      245
+    ],
+    "Hip Flexors": [
+      408,
+      412,
+      426,
+      430,
+      434,
+      435
+    ],
+    "Sternocleidomastoid": [
+      86,
+      87
+    ]
+  },
+  "skin_id": 881,
+  "joints": [
+    "Pelvis",
+    "Spine_Lower",
+    "Spine_Upper",
+    "Neck",
+    "Head",
+    "Clavicle_R",
+    "Thigh_R",
+    "Shin_R",
+    "Foot_R",
+    "UpperArm_R",
+    "ForeArm_R",
+    "Hand_R",
+    "Fingers_Proximal_R",
+    "Fingers_Distal_R",
+    "Thumb_R",
+    "Clavicle_L",
+    "Thigh_L",
+    "Shin_L",
+    "Foot_L",
+    "UpperArm_L",
+    "ForeArm_L",
+    "Hand_L",
+    "Fingers_Proximal_L",
+    "Fingers_Distal_L",
+    "Thumb_L"
+  ]
+}

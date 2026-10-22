@@ -1,7 +1,7 @@
 {
   "name": "ecorche-body",
-  "version": "0.2.0",
-  "description": "Parametric 2D/3D anatomy figure. Highlight primary and secondary muscles from height, weight, gender and age.",
+  "version": "0.3.0",
+  "description": "Parametric 2D/3D human anatomy figure for fitness apps. Real muscle-mapped GLB, primary/secondary highlights from gender, height, weight and age.",
   "type": "module",
   "main": "./dist/ecorche-body.js",
   "module": "./dist/ecorche-body.js",
@@ -9,10 +9,14 @@
     ".": {
       "import": "./dist/ecorche-body.js"
     },
-    "./style.css": "./dist/ecorche-body.css"
+    "./style.css": "./dist/ecorche-body.css",
+    "./models/*": "./models/*"
   },
   "files": [
-    "dist"
+    "dist",
+    "models",
+    "docs",
+    "LICENSE.md"
   ],
   "scripts": {
     "dev": "vite",
@@ -24,14 +28,20 @@
     "muscles",
     "fitness",
     "3d",
+    "ecorche",
     "react",
-    "body"
+    "body",
+    "gltf"
   ],
-  "license": "MIT",
+  "license": "MIT AND CC-BY-SA-4.0",
   "author": "Aygun Alp Kagan",
   "repository": {
     "type": "git",
     "url": "https://github.com/AygunAlpKagan/ecorche-body.git"
+  },
+  "homepage": "https://www.npmjs.com/package/ecorche-body",
+  "bugs": {
+    "url": "https://github.com/AygunAlpKagan/ecorche-body/issues"
   },
   "peerDependencies": {
     "react": ">=18",
