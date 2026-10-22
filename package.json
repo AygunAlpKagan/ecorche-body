@@ -1,6 +1,6 @@
 {
   "name": "ecorche-body",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Parametric 2D/3D anatomy figure. Highlight primary and secondary muscles from height, weight, gender and age.",
   "type": "module",
   "main": "./dist/ecorche-body.js",

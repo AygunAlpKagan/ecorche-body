@@ -7,6 +7,7 @@ function Play() {
       <h1>ecorche-body</h1>
       <Body3D gender="male" height={178} weight={82} primary={["chest"]} secondary={["shoulders", "triceps"]} />
       <Body2D gender="male" height={178} weight={82} primary={["chest"]} secondary={["shoulders"]} labeled />
+      <Body2D gender="female" height={165} weight={60} primary={["glutes"]} secondary={["hamstrings"]} labeled />
     </main>
   );
 }

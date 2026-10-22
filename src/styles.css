@@ -32,19 +32,33 @@
   grid-template-columns: 1fr 1fr;
 }
 .ecorche-2d-fig {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+.ecorche-2d-stage {
   position: relative;
-  background: #141414;
+  width: 100%;
+  background: radial-gradient(ellipse at 50% 24%, #262033 0%, #121019 72%);
+  border: 1px solid #2a2038;
   border-radius: 1rem;
   overflow: hidden;
   transform-origin: center top;
 }
-.ecorche-2d-fig svg {
+.ecorche-2d-stage svg {
   width: 100%;
   height: auto;
   display: block;
 }
+.ecorche-2d-fig figcaption {
+  color: #9b90b8;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
 .ecorche-skin {
-  fill: #8d949e;
+  fill: #9099a6;
 }
 .ecorche-zone {
   mix-blend-mode: overlay;
