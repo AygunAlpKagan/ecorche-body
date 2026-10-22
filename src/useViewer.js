@@ -37,7 +37,7 @@ export function useViewer(canvasRef, {
 
   useEffect(() => {
     viewerRef.current?.setFigure({ gender, shape, modelUrl, baseUrl });
-  }, [gender, shape.height, shape.weight, shape.bulk, modelUrl, baseUrl]);
+  }, [gender, shape.height, shape.weight, shape.bmi, shape.bulk, shape.definition, shape.fat, modelUrl, baseUrl]);
 
   useEffect(() => {
     viewerRef.current?.setHighlight(primary, secondary, primaryColor, secondaryColor);

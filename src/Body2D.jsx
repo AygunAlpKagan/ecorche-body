@@ -15,7 +15,7 @@ export function Body2D({
   pose = "rest",
   modelUrl,
   baseUrl,
-  credit = true,
+  credit = false,
   className = "",
 }) {
   const canvasRef = useRef(null);

@@ -1,6 +1,6 @@
 {
   "name": "ecorche-body",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Parametric 2D/3D human anatomy figure for fitness apps. Real muscle-mapped GLB, primary/secondary highlights from gender, height, weight and age.",
   "type": "module",
   "main": "./dist/ecorche-body.js",

@@ -6,6 +6,7 @@ export { bodyShape } from "./shape.js";
 export {
   MUSCLES,
   MUSCLE_IDS,
+  MUSCLE_COLORS,
   GROUP_NAMES,
   GROUPS,
   ALIASES,

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { vertexIds } from "./muscles.js";
+import { SKIN_ID, MUSCLE_COLORS, groupOfVertex, vertexIds } from "./muscles.js";
 
 const CDN = "https://cdn.jsdelivr.net/gh/AygunAlpKagan/ecorche-body@main/models";
 const PRIMARY = new THREE.Color("#e83034");
@@ -62,18 +62,28 @@ function snapshotColors(mesh) {
   return base;
 }
 
-function paint(mesh, base, primary, secondary, primaryColor, secondaryColor) {
+function paint(mesh, base, primary, secondary) {
   if (!mesh || !base) return;
   const mus = mesh.geometry.getAttribute("_muscle");
   const col = mesh.geometry.getAttribute("color");
   if (!mus || !col) return;
   const p = vertexIds(primary);
   const s = vertexIds(secondary);
+  const scratch = new THREE.Color();
+  const leftover = new THREE.Color("#c2786e");
   for (let i = 0; i < mus.count; i += 1) {
     const id = Math.round(mus.getX(i));
-    if (p.has(id)) col.setXYZ(i, primaryColor.r, primaryColor.g, primaryColor.b);
-    else if (s.has(id)) col.setXYZ(i, secondaryColor.r, secondaryColor.g, secondaryColor.b);
-    else col.setXYZ(i, base[i * 3], base[i * 3 + 1], base[i * 3 + 2]);
+    if (id === SKIN_ID) {
+      col.setXYZ(i, base[i * 3], base[i * 3 + 1], base[i * 3 + 2]);
+      continue;
+    }
+    const group = groupOfVertex(id);
+    if (group && MUSCLE_COLORS[group]) scratch.set(MUSCLE_COLORS[group]);
+    else scratch.copy(leftover);
+    if (p.has(id)) scratch.offsetHSL(0, 0.12, 0.16);
+    else if (s.has(id)) scratch.offsetHSL(0, 0.06, 0.08);
+    else scratch.offsetHSL(0, -0.04, -0.08);
+    col.setXYZ(i, scratch.r, scratch.g, scratch.b);
   }
   col.needsUpdate = true;
 }
@@ -81,7 +91,6 @@ function paint(mesh, base, primary, secondary, primaryColor, secondaryColor) {
 function poseBones(mesh, pose) {
   if (!mesh?.skeleton) return;
   const bones = Object.fromEntries(mesh.skeleton.bones.map((bone) => [bone.name, bone]));
-  mesh.skeleton.pose();
   const bend = (name, deg) => {
     if (bones[name]) bones[name].rotateZ(THREE.MathUtils.degToRad(deg));
   };
@@ -94,7 +103,54 @@ function poseBones(mesh, pose) {
   }
 }
 
+function inflateMesh(mesh, shape) {
+  if (!mesh) return;
+  const pos = mesh.geometry.getAttribute("position");
+  const nrm = mesh.geometry.getAttribute("normal");
+  const mus = mesh.geometry.getAttribute("_muscle");
+  if (!pos || !nrm) return;
+  if (!mesh.userData.basePos) mesh.userData.basePos = Float32Array.from(pos.array);
+  const bind = mesh.userData.basePos;
+  const muscleAmt = (shape.definition || 0.5) * 0.012 + (shape.bulk - 0.4) * 0.01;
+  const fatAmt = (shape.fat || 0) * 0.016;
+  for (let i = 0; i < pos.count; i += 1) {
+    const id = mus ? Math.round(mus.getX(i)) : SKIN_ID;
+    const push = id === SKIN_ID ? fatAmt : muscleAmt + fatAmt * 0.45;
+    const o = i * 3;
+    pos.array[o] = bind[o] + nrm.getX(i) * push;
+    pos.array[o + 1] = bind[o + 1] + nrm.getY(i) * push;
+    pos.array[o + 2] = bind[o + 2] + nrm.getZ(i) * push;
+  }
+  pos.needsUpdate = true;
+  mesh.geometry.computeBoundingSphere();
+}
+
+function scaleBone(bones, name, yz) {
+  const bone = bones[name];
+  if (bone) bone.scale.set(1, yz, yz);
+}
+
+function applyBoneBulk(mesh, shape) {
+  if (!mesh?.skeleton) return;
+  const bones = Object.fromEntries(mesh.skeleton.bones.map((bone) => [bone.name, bone]));
+  mesh.skeleton.pose();
+  const s = shape;
+  ["R", "L"].forEach((side) => {
+    scaleBone(bones, `Clavicle_${side}`, s.shoulder);
+    scaleBone(bones, `UpperArm_${side}`, s.arm);
+    scaleBone(bones, `ForeArm_${side}`, 0.86 + s.bulk * 0.28);
+    scaleBone(bones, `Thigh_${side}`, s.thigh);
+    scaleBone(bones, `Shin_${side}`, s.calf);
+  });
+  if (bones.Pelvis) bones.Pelvis.scale.set(1, 0.96 + (s.hip - 1) * 0.35, s.hip);
+  if (bones.Spine_Upper) bones.Spine_Upper.scale.set(1, 0.94 + s.bulk * 0.16, 0.9 + (s.fat || 0) * 0.2);
+  if (bones.Spine_Lower) bones.Spine_Lower.scale.set(1, 0.92 + (s.fat || 0) * 0.22, 0.9 + (s.fat || 0) * 0.2);
+  if (bones.Neck) bones.Neck.scale.set(1, s.neck, s.neck);
+}
+
 function applyShape(root, mesh, shape) {
+  inflateMesh(mesh, shape);
+  applyBoneBulk(mesh, shape);
   root.scale.set(1, 1, 1);
   root.position.set(0, 0, 0);
   root.updateMatrixWorld(true);
@@ -103,8 +159,8 @@ function applyShape(root, mesh, shape) {
   const natural = size.y || 1.7;
   const heightM = (shape.height || 175) / 100;
   const y = heightM / natural;
-  const xz = y * (0.86 + shape.bulk * 0.28);
-  root.scale.set(xz, y, xz);
+  const xz = y * (0.74 + shape.bulk * 0.46 + (shape.fat || 0) * 0.08);
+  root.scale.set(xz * (shape.female ? 0.94 : 1), y, xz * (shape.female ? 0.96 : 1));
   root.updateMatrixWorld(true);
   box.setFromObject(root);
   const center = box.getCenter(new THREE.Vector3());
@@ -112,7 +168,7 @@ function applyShape(root, mesh, shape) {
   root.position.z -= center.z;
   root.position.y -= box.min.y;
   if (mesh?.material) {
-    mesh.material.roughness = 0.38 + (1 - (shape.definition || 0.7)) * 0.32;
+    mesh.material.roughness = 0.28 + (1 - (shape.definition || 0.7)) * 0.42;
   }
 }
 
@@ -156,6 +212,7 @@ export function createViewer(canvas, { view = "orbit", autoRotate = false } = {}
   let pose = "rest";
   let status = "Yükleniyor…";
   let currentUrl = "";
+  let currentShape = null;
 
   function frame() {
     if (!root) return;
@@ -198,14 +255,16 @@ export function createViewer(canvas, { view = "orbit", autoRotate = false } = {}
   }
 
   function applyHighlight() {
-    paint(mesh, base, highlight.primary, highlight.secondary, highlight.primaryColor, highlight.secondaryColor);
+    paint(mesh, base, highlight.primary, highlight.secondary);
   }
 
   async function setFigure({ gender, shape, modelUrl, baseUrl }) {
+    currentShape = shape;
     const url = resolveModelUrl({ gender, modelUrl, baseUrl });
     if (root && mesh && url === currentUrl) {
       applyShape(root, mesh, shape);
       poseBones(mesh, pose);
+      applyHighlight();
       frame();
       return;
     }
@@ -245,18 +304,14 @@ export function createViewer(canvas, { view = "orbit", autoRotate = false } = {}
     status = "";
   }
 
-  function setHighlight(primary = [], secondary = [], primaryColor, secondaryColor) {
-    highlight = {
-      primary,
-      secondary,
-      primaryColor: new THREE.Color(primaryColor || "#e83034"),
-      secondaryColor: new THREE.Color(secondaryColor || "#ff9230"),
-    };
+  function setHighlight(primary = [], secondary = []) {
+    highlight = { primary, secondary };
     applyHighlight();
   }
 
   function setPose(next = "rest") {
     pose = next;
+    if (mesh && currentShape) applyBoneBulk(mesh, currentShape);
     poseBones(mesh, pose);
     frame();
   }
