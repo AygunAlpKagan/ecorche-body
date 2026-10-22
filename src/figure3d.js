@@ -73,9 +73,10 @@ export function createScene(canvas, { autoRotate = true } = {}) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 40);
-  camera.position.set(0, 1.05, 4.1);
-  camera.lookAt(0, 0.95, 0);
+  const view = 1.15;
+  const camera = new THREE.OrthographicCamera(-view, view, view, -view, 0.1, 40);
+  camera.position.set(0, 0.88, 6);
+  camera.lookAt(0, 0.88, 0);
 
   const hemi = new THREE.HemisphereLight(0xdde7ff, 0x1a1424, 1.1);
   const key = new THREE.DirectionalLight(0xffffff, 1.35);
@@ -103,10 +104,14 @@ export function createScene(canvas, { autoRotate = true } = {}) {
   let rotate = autoRotate;
 
   function resize() {
-    const w = canvas.clientWidth || 320;
-    const h = canvas.clientHeight || 420;
+    const w = Math.max(1, canvas.clientWidth || 320);
+    const h = Math.max(1, canvas.clientHeight || 420);
     renderer.setSize(w, h, false);
-    camera.aspect = w / h;
+    const aspect = w / h;
+    camera.left = -view * aspect;
+    camera.right = view * aspect;
+    camera.top = view;
+    camera.bottom = -view;
     camera.updateProjectionMatrix();
   }
 
@@ -134,7 +139,8 @@ export function createScene(canvas, { autoRotate = true } = {}) {
   canvas.addEventListener("pointerdown", onDown);
   canvas.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", onUp);
-  window.addEventListener("resize", resize);
+  const ro = new ResizeObserver(resize);
+  ro.observe(canvas);
   resize();
 
   function tick() {
@@ -156,7 +162,7 @@ export function createScene(canvas, { autoRotate = true } = {}) {
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("resize", resize);
+      ro.disconnect();
       renderer.dispose();
     },
   };
