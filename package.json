@@ -1,0 +1,48 @@
+{
+  "name": "ecorche-body",
+  "version": "0.1.0",
+  "description": "Parametric 2D/3D anatomy figure. Highlight primary and secondary muscles from height, weight, gender and age.",
+  "type": "module",
+  "main": "./dist/ecorche-body.js",
+  "module": "./dist/ecorche-body.js",
+  "exports": {
+    ".": {
+      "import": "./dist/ecorche-body.js"
+    },
+    "./style.css": "./dist/ecorche-body.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "anatomy",
+    "muscles",
+    "fitness",
+    "3d",
+    "react",
+    "body"
+  ],
+  "license": "MIT",
+  "author": "Aygun Alp Kagan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AygunAlpKagan/ecorche-body.git"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "three": ">=0.160.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.170.0",
+    "vite": "^7.1.7"
+  }
+}
