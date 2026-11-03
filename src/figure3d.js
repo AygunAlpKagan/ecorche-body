@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { SKIN_ID, MUSCLE_COLORS, groupOfVertex, vertexIds } from "./muscles.js";
+import { SKIN_ID, vertexIds } from "./muscles.js";
 
 const CDN = "https://cdn.jsdelivr.net/gh/AygunAlpKagan/ecorche-body@main/models";
 const PRIMARY = new THREE.Color("#e83034");
@@ -62,28 +62,32 @@ function snapshotColors(mesh) {
   return base;
 }
 
-function paint(mesh, base, primary, secondary) {
+function asColor(value, fallback) {
+  try {
+    return value ? new THREE.Color(value) : fallback.clone();
+  } catch {
+    return fallback.clone();
+  }
+}
+
+function paint(mesh, base, primary, secondary, primaryColor = PRIMARY, secondaryColor = SECONDARY) {
   if (!mesh || !base) return;
   const mus = mesh.geometry.getAttribute("_muscle");
   const col = mesh.geometry.getAttribute("color");
   if (!mus || !col) return;
   const p = vertexIds(primary);
   const s = vertexIds(secondary);
-  const scratch = new THREE.Color();
-  const leftover = new THREE.Color("#c2786e");
   for (let i = 0; i < mus.count; i += 1) {
     const id = Math.round(mus.getX(i));
-    if (id === SKIN_ID) {
-      col.setXYZ(i, base[i * 3], base[i * 3 + 1], base[i * 3 + 2]);
+    if (p.has(id)) {
+      col.setXYZ(i, primaryColor.r, primaryColor.g, primaryColor.b);
       continue;
     }
-    const group = groupOfVertex(id);
-    if (group && MUSCLE_COLORS[group]) scratch.set(MUSCLE_COLORS[group]);
-    else scratch.copy(leftover);
-    if (p.has(id)) scratch.offsetHSL(0, 0.12, 0.16);
-    else if (s.has(id)) scratch.offsetHSL(0, 0.06, 0.08);
-    else scratch.offsetHSL(0, -0.04, -0.08);
-    col.setXYZ(i, scratch.r, scratch.g, scratch.b);
+    if (s.has(id) && !p.has(id)) {
+      col.setXYZ(i, secondaryColor.r, secondaryColor.g, secondaryColor.b);
+      continue;
+    }
+    col.setXYZ(i, base[i * 3], base[i * 3 + 1], base[i * 3 + 2]);
   }
   col.needsUpdate = true;
 }
@@ -254,7 +258,7 @@ export function createViewer(canvas, { view = "orbit", autoRotate = false } = {}
   }
 
   function applyHighlight() {
-    paint(mesh, base, highlight.primary, highlight.secondary);
+    paint(mesh, base, highlight.primary, highlight.secondary, highlight.primaryColor, highlight.secondaryColor);
   }
 
   async function setFigure({ gender, shape, modelUrl, baseUrl }) {
@@ -303,8 +307,13 @@ export function createViewer(canvas, { view = "orbit", autoRotate = false } = {}
     status = "";
   }
 
-  function setHighlight(primary = [], secondary = []) {
-    highlight = { primary, secondary };
+  function setHighlight(primary = [], secondary = [], primaryColor, secondaryColor) {
+    highlight = {
+      primary,
+      secondary,
+      primaryColor: asColor(primaryColor, PRIMARY),
+      secondaryColor: asColor(secondaryColor, SECONDARY),
+    };
     applyHighlight();
   }
 

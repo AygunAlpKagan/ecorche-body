@@ -46,8 +46,8 @@ import "ecorche-body/style.css";
 | `height` | Uniform stature scale, in cm. |
 | `weight` | Contributes to a gradual estimated body-fat and lean-mass shape; it does not uniformly widen the whole model. |
 | `age` | Contributes to the adult body-fat estimate and subtly softens the surface. |
-| `primary` | Vertex-painted **red** `#e83034` |
-| `secondary` | Vertex-painted **orange** `#ff9230` |
+| `primary` | Today's main muscles, painted **red** `#e83034`. Everything else stays the model's flesh tone. |
+| `secondary` | Assistants, painted **orange** `#ff9230`. |
 | `pose` | `rest` · `curl` · `squat` (skinned skeleton) |
 
 Models are ~4 MB each, ~54k vertices, with a `_MUSCLE` id per vertex. Highlighting is a color buffer update — no shader rewrite.
