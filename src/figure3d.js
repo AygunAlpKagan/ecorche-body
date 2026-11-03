@@ -159,8 +159,7 @@ function applyShape(root, mesh, shape) {
   const natural = size.y || 1.7;
   const heightM = (shape.height || 175) / 100;
   const y = heightM / natural;
-  const xz = y * (0.74 + shape.bulk * 0.46 + (shape.fat || 0) * 0.08);
-  root.scale.set(xz * (shape.female ? 0.94 : 1), y, xz * (shape.female ? 0.96 : 1));
+  root.scale.set(y * (shape.female ? 0.94 : 1), y, y * (shape.female ? 0.96 : 1));
   root.updateMatrixWorld(true);
   box.setFromObject(root);
   const center = box.getCenter(new THREE.Vector3());
