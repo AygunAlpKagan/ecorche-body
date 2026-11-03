@@ -44,8 +44,8 @@ import "ecorche-body/style.css";
 | --- | --- |
 | `gender` | Loads the male or female GLB (different skeleton, fat pads, muscle mass). |
 | `height` | Uniform stature scale, in cm. |
-| `weight` | BMI-based bulk: wider torso/limbs as BMI rises. |
-| `age` | Softens surface (higher roughness). |
+| `weight` | Contributes to a gradual estimated body-fat and lean-mass shape; it does not uniformly widen the whole model. |
+| `age` | Contributes to the adult body-fat estimate and subtly softens the surface. |
 | `primary` | Vertex-painted **red** `#e83034` |
 | `secondary` | Vertex-painted **orange** `#ff9230` |
 | `pose` | `rest` · `curl` · `squat` (skinned skeleton) |
@@ -125,8 +125,10 @@ Peer dependency: **three >= 0.160**, React >= 18.
 import { bodyShape } from "ecorche-body";
 
 const shape = bodyShape({ gender: "female", height: 165, weight: 60, age: 24 });
-// { bmi, bulk, definition, shoulder, chest, waist, hip, … }
+// { bmi, bodyFatPercent, leanMassIndex, bulk, definition, shoulder, chest, waist, hip, … }
 ```
+
+Body composition is an approximation based on BMI, age, and the selected gender model. Those inputs cannot determine an individual's actual body-fat percentage or muscle mass; use measured body-composition data when accuracy matters. Shape changes are intentionally conservative, and height controls stature independently of weight.
 
 ## Credits
 
